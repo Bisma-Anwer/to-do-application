@@ -1,19 +1,62 @@
 document.addEventListener('DOMContentLoaded' , () => {
     let taskInput = document.getElementById
-    ('task-input');
+    (`task-input`);
     let addTaskBtn = document.getElementById
-    ('add-task-btn');
+    (`add-task-btn`);
     let taskList = document.getElementById
-    ('task-list')
+    (`task-list`)
 
     let addTask = (event) => {
-        let taskText = taskInput.ariaValueMax.trim();
+        event.preventDefault();
+        let taskText = taskInput.value.trim();
         if(!taskText) {
             return;
         }
 
         let li = document.createElement('li');
-        li.textContent = taskText;
+        li.innerHTML = `
+        <input type= "checkbox" class="checkbox">
+        <span>${taskText}</span>
+        <div class="task-buttons">
+        <button class="edit-btn"><i class="fa-solid fa-pen"></i></button>
+        <button class="delete-btn"><i class="fa-solid fa-trash"></i></button>
+        <div/>
+        `;
+
+        let checkbox = li.querySelector(".checkbox");
+        let editBtn = li.querySelector (".edit-btn");
+
+        // if (completed) {
+        //     li.classList.add(`completed`);
+        //     editBtn.disabled = true;
+        //     editBtn.style.opacity = `0.5`;
+        //     editBtn.style.pointerEvents = `none`;
+        // }
+
+        // checkbox.addEventListener(`change`, () => {
+        //     let isChecked = checkbox.checked;
+        //     li.classList.toggle(`completed`, isChecked);
+        //     editBtn.disabled = isChecked;
+        //     editBtn.style.opacity = isChecked ? `0.5` : `1`;
+        //     editBtn.style.pointerEvents = isChecked ? `none` : `auto`;
+        // })
+
+        editBtn.addEventListener(`click`, () => {
+            if(!checkbox.checked) {
+                taskInput.value = li.querySelector
+                (`span`).textContent;
+                li.remove();
+            }
+        })
+
+
+
+       li.querySelector(`.delete-btn`).
+       addEventListener(`click`, () =>{
+        li.remove();
+       
+       });
+
         taskList.appendChild(li);
         taskInput.value = '';
     };
